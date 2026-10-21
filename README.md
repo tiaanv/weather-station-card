@@ -158,6 +158,11 @@ Legacy entity aliases remain accepted: `rain_mm_today`, `rain_rate_mm_per_hour`,
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for build, validation and release steps. The standalone demo uses synthetic data and can be served with `node scripts/serve.mjs` at `http://localhost:8767/demo/`.
 
+## Support
+
+Enjoying the project? [Buy me a beer 🍺](https://ko-fi.com/tiaanvee).
+Always appreciated, never expected.
+
 ## License
 
 [MIT](LICENSE). Optional history rendering is provided by the separately installed [Mini Graph Card](https://github.com/kalkih/mini-graph-card), licensed under MIT; its code is not bundled here.
