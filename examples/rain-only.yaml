@@ -1,0 +1,5 @@
+type: custom:weather-station-card
+name: Rain station
+entities:
+  rain_today: sensor.weather_rain_today
+  rain_rate: sensor.weather_rain_rate

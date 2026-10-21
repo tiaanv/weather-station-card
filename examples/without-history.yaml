@@ -1,0 +1,5 @@
+type: custom:weather-station-card
+show_history: false
+entities:
+  temperature: sensor.outdoor_temperature
+  pressure: sensor.atmospheric_pressure

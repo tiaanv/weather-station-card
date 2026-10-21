@@ -1,0 +1,14 @@
+type: custom:weather-station-card
+name: Home weather
+entities:
+  rain_today: sensor.weather_rain_today
+  rain_rate: sensor.weather_rain_rate
+  rain_last_hour: sensor.weather_rain_last_hour
+  rain_this_week: sensor.weather_rain_this_week
+  rain_this_month: sensor.weather_rain_this_month
+  rain_total: sensor.weather_rain_total
+  rain_last_detected: sensor.weather_last_rain
+  wind_speed: sensor.weather_wind_speed_smoothed
+  wind_direction_degrees: sensor.weather_wind_direction_smoothed
+  temperature: sensor.weather_temperature
+  pressure: sensor.weather_pressure

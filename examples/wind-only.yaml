@@ -1,0 +1,5 @@
+type: custom:weather-station-card
+name: Wind station
+entities:
+  wind_speed: sensor.weather_wind_speed_smoothed
+  wind_direction_degrees: sensor.weather_wind_direction_smoothed
