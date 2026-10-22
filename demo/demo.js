@@ -30,11 +30,12 @@ const initial=cup.getAttribute('transform');await new Promise(r=>setTimeout(r,12
 show(ids,{wind_speed:0,rain_rate:0});await settle();const stopped=q('[data-cup="0"]').getAttribute('transform');await new Promise(r=>setTimeout(r,80));check('zero wind pauses cups',q('[data-cup="0"]').getAttribute('transform')===stopped);check('dry hides rain',getComputedStyle(q('.rain-lines')).opacity==='0');
 // Update hass without resetting config: this is how a real dry-to-rain transition arrives.
 const nextRain=value=>{const states={...card._hass.states,[ids.rain_rate]:{entity_id:ids.rain_rate,state:String(value),attributes:{unit_of_measurement:'mm/h'}}};card.hass={...card._hass,states};};
-nextRain(1.2);await settle();check('rain appears on live dry-to-wet update',getComputedStyle(q('.rain-lines')).opacity==='0.7');
+nextRain(1.2);await settle();check('rain appears on live dry-to-wet update',Number(getComputedStyle(q('.rain-lines')).opacity)>0);
+check('rain streams have independent timing',new Set([...card.shadowRoot.querySelectorAll('.rain-lines')].map(p=>getComputedStyle(p).animationDelay)).size===6);
 const dash=getComputedStyle(q('.rain-lines')).strokeDashoffset;await new Promise(r=>setTimeout(r,100));check('rain dashes move while raining',getComputedStyle(q('.rain-lines')).strokeDashoffset!==dash);
 nextRain(0);await settle();check('rain hides on live wet-to-dry update',getComputedStyle(q('.rain-lines')).opacity==='0');
 nextRain('unavailable');await settle();check('unavailable rate hides rain',getComputedStyle(q('.rain-lines')).opacity==='0');
-nextRain(.2);await settle();check('rain recovers after unavailable rate',getComputedStyle(q('.rain-lines')).opacity==='0.7');
+nextRain(.2);await settle();check('rain recovers after unavailable rate',Number(getComputedStyle(q('.rain-lines')).opacity)>0);
 
 show(ids,{wind_direction_degrees:0});await settle();let tip=q('.wind-vane polygon:last-child').getAttribute('points').split(' ').slice(0,2).map(Number);check('north points away',tip[1]<193);
 show(ids,{wind_direction_degrees:180});await settle();tip=q('.wind-vane polygon:last-child').getAttribute('points').split(' ').slice(0,2).map(Number);check('south points toward viewer',tip[1]>193);

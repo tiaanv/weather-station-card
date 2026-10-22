@@ -1,3 +1,3 @@
-Fixes rain drops staying hidden when rain starts after the card has loaded. Animation now follows live rain-rate updates, including recovery after an unavailable reading.
+Rain now falls with staggered timing, uneven spacing and subtle variations in drop length and brightness. The simple graphic stays the same, with a less regimented rainfall animation.
 
-Includes regression checks for dry-to-wet and wet-to-dry transitions. No configuration changes required. Refresh the dashboard after updating.
+Includes the live rain-rate visibility fix from v1.3.1. No configuration changes needed; refresh your dashboard after updating.
