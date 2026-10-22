@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1 — 2026-10-22
+
+- Fix rain animation visibility when the rain-rate sensor changes after initial load.
+- Add browser regression checks for dry/wet transitions and unavailable sensor recovery.
+
 ## 1.3.0 — 2026-10-21
 
 First public release after private dashboard testing.
