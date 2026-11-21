@@ -1,0 +1,4 @@
+type: custom:weather-station-card
+name: Humidity
+entities:
+  humidity: sensor.outdoor_humidity

@@ -1,8 +1,8 @@
-/* Weather station graphical card — v1.3.2. */
-const WEATHER_STATION_CARD_VERSION='1.3.2';
+/* Weather station graphical card — v1.4.0. */
+const WEATHER_STATION_CARD_VERSION='1.4.0';
 class WeatherStationCard extends HTMLElement {
   setConfig(config) {
-    const entityKeys={"today": ["rain_today", "rain_mm_today", "today"], "rate": ["rain_rate", "rain_rate_mm_per_hour", "rate"], "hour": ["rain_last_hour", "rain_mm_last_hour", "hour"], "week": ["rain_this_week", "rain_mm_this_week", "week"], "month": ["rain_this_month", "rain_mm_this_month", "month"], "total": ["rain_total", "rain_mm_total", "total"], "last_rain": ["rain_last_detected", "last_rain"], "wind": ["wind_speed", "wind_speed_kmh", "wind"], "direction": ["wind_direction_degrees", "direction"], "temperature": ["temperature", "temperature_celsius"], "pressure": ["pressure", "pressure_hpa"]};
+    const entityKeys={"today": ["rain_today", "rain_mm_today", "today"], "rate": ["rain_rate", "rain_rate_mm_per_hour", "rate"], "hour": ["rain_last_hour", "rain_mm_last_hour", "hour"], "week": ["rain_this_week", "rain_mm_this_week", "week"], "month": ["rain_this_month", "rain_mm_this_month", "month"], "total": ["rain_total", "rain_mm_total", "total"], "last_rain": ["rain_last_detected", "last_rain"], "wind": ["wind_speed", "wind_speed_kmh", "wind"], "direction": ["wind_direction_degrees", "direction"], "temperature": ["temperature", "temperature_celsius"], "pressure": ["pressure", "pressure_hpa"], "humidity": ["humidity"]};
     const entities=Object.fromEntries(Object.entries(entityKeys).map(([internal,keys])=>[internal,keys.map(key=>config.entities?.[key]).find(id=>typeof id==='string'&&id.trim())]));
     clearInterval(this._historyTimer);this._historyTimer=null;
     this._historyPanel?.remove();this._historyPanel=null;this._historyCards=null;this._stateSignature=null;
@@ -202,7 +202,7 @@ class WeatherStationCard extends HTMLElement {
       [183,2.5,26,.81,-.13,.56],[193,3.5,36,1.07,-.82,.65],
       [201,2,29,.86,-.51,.5],[211,3,25,.77,-.37,.68]
     ].map(([x,length,gap,speed,delay,alpha])=>`<path class="rain-lines" style="opacity:${rain>0?alpha:0};--rain-dashes:${length} ${gap};--rain-travel:-${length+gap};--rain-speed:${speed}s;--rain-delay:${delay}s" d="M${x} 48v112"/>`).join('')}</g>
-    <g class="outline" opacity=".5"><path data-instrument="rain" d="M122 67h25l16 71"/><path data-instrument="wind" d="M310 83h34l12-12"/><path data-instrument="direction" d="M371 153h18"/><path data-instrument="pressure" d="M257 237h-42l-25 30"/><path data-instrument="temperature" d="M281 237h42l25 30"/></g>
+    <g class="outline" opacity=".5"><path data-instrument="rain" d="M122 67h25l16 71"/><path data-instrument="wind" d="M310 83h34l12-12"/><path data-instrument="direction" d="M371 153h18"/><path data-instrument="pressure" d="M257 237h-42l-25 30"/><path data-instrument="temperature" d="M281 237h42l25 30"/><path data-instrument="humidity" d="M281 230h42l25-30"/></g>
     <g transform="translate(0 -58)">
     ${this.graphicReading('today','RAIN TODAY','mm',10,106)}
     <g data-entity="rate" class="graphic-reading" role="button" tabindex="0" aria-label="Rain rate"><rect x="5" y="143" width="130" height="23" fill="transparent"/><text x="10" y="158" class="rain-number" fill="var(--blue)">${this.value('rate')} <tspan class="rain-caption">${e(this.unit('rate','mm/h'))} now</tspan></text></g>
@@ -211,12 +211,13 @@ class WeatherStationCard extends HTMLElement {
     ${this.graphicReading('wind','SPEED','km/h',364,48)}
     <g class="graphic-reading" data-entity="direction" role="button" tabindex="0" aria-label="Direction: ${heading} ${this.value('direction',0)} degrees"><rect x="390" y="119" width="118" height="60" fill="transparent"/><text x="396" y="141" class="art-label">DIRECTION</text><text x="396" y="167" class="direction-value">${heading} <tspan class="art-unit">${d===null?'':this.value('direction',0)+'°'}</tspan></text></g>
     ${this.graphicReading('pressure','PRESSURE','hPa',100,261)}
+    ${this.graphicReading('humidity','HUMIDITY','',354,207)}
     ${this.graphicReading('temperature','TEMPERATURE','°C',354,267)}
     <text x="269" y="326" text-anchor="middle" class="art-label">HOME WEATHER STATION</text></svg></div>
     <details ${open?'open':''}><summary>Station details</summary>${[['rate','Rain rate','mm/h'],['total','Lifetime rain','mm']].filter(([key])=>this.defined(key)).map(([key,label,unit])=>`<button class="detail" data-entity="${key}"><span>${label}</span><strong>${this.value(key)} ${e(this.unit(key,unit))}</strong></button>`).join('')}<button class="detail" data-entity="last_rain"><span>Last rainfall</span><strong>${e(this.entity('last_rain')?.state??'Unavailable')}</strong></button><div class="source">Tap a reading to open its Home Assistant history.</div></details></div><aside class="history-slot" aria-label="History panel"></aside></div></ha-card>`;
     const template=document.createElement('template');template.innerHTML=markup;
     const rainConfigured=['today','rate','hour','week','month'].some(key=>this.defined(key));
-    const features={rain:rainConfigured,wind:this.defined('wind'),direction:this.defined('direction'),environment:this.defined('temperature')||this.defined('pressure'),temperature:this.defined('temperature'),pressure:this.defined('pressure')};
+    const features={rain:rainConfigured,wind:this.defined('wind'),direction:this.defined('direction'),environment:this.defined('temperature')||this.defined('pressure')||this.defined('humidity'),humidity:this.defined('humidity'),temperature:this.defined('temperature'),pressure:this.defined('pressure')};
     template.content.querySelectorAll('[data-instrument]').forEach(node=>{if(!features[node.dataset.instrument])node.remove();});
     template.content.querySelectorAll('[data-entity]').forEach(node=>{if(!this.defined(node.dataset.entity))node.remove();});
     if(!Object.values(this.config.entities).some(Boolean)){

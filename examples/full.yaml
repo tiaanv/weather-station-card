@@ -11,4 +11,5 @@ entities:
   wind_speed: sensor.weather_wind_speed_smoothed
   wind_direction_degrees: sensor.weather_wind_direction_smoothed
   temperature: sensor.weather_temperature
+  humidity: sensor.weather_humidity
   pressure: sensor.weather_pressure

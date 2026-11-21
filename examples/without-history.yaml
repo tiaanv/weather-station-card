@@ -2,4 +2,5 @@ type: custom:weather-station-card
 show_history: false
 entities:
   temperature: sensor.outdoor_temperature
+  humidity: sensor.outdoor_humidity
   pressure: sensor.atmospheric_pressure

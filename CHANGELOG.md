@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0 — 2026-11-21
+
+- Add optional `entities.humidity`, displayed above temperature without increasing card height.
+- Use the humidity entity unit and open its Home Assistant history on tap or keyboard activation.
+- Hide the reading and its leader when humidity is omitted; show a dash when unavailable.
+- Update the README, full and no-history examples, and add a humidity-only example.
+- Add humidity configuration and browser regression checks.
+
 ## 1.3.2 — 2026-10-22
 
 - Make rainfall more natural with independently timed drops, uneven spacing, varied lengths and subtle brightness differences.

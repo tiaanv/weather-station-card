@@ -15,3 +15,5 @@ test('missing, unknown and malformed numbers are unavailable',()=>{const c=card(
 test('numeric zero is retained',()=>{const c=card({entities:{wind_speed:'sensor.w'}});c._hass={states:{'sensor.w':{state:'0'}}};assert.equal(c.number('wind'),0);});
 test('headings and sensor strings are escaped',()=>assert.equal(card().esc('<img onerror="x">&'), '&lt;img onerror=&quot;x&quot;&gt;&amp;'));
 test('history can be disabled',()=>assert.equal(card({show_history:false}).config.show_history,false));
+
+test('humidity uses optional entity mapping and entity units',()=>{const c=card({entities:{humidity:'sensor.h'}});assert.equal(c.config.entities.humidity,'sensor.h');c._hass={states:{'sensor.h':{state:'50',attributes:{unit_of_measurement:'%'}}}};assert.equal(c.number('humidity'),50);assert.equal(c.unit('humidity'),'%');});

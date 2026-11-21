@@ -2,13 +2,14 @@
 
 An animated weather station for Home Assistant dashboards, with readings placed beside the instruments that measure them.
 
-![Weather Station Card](docs/station.png)
+![Weather Station Card](docs/station-humidity.jpg)
 
 Wind cups rotate with wind speed, rain falls when the rain-rate sensor reports precipitation, and a wind vane points into the measured wind direction. On wide cards, a compact history panel appears alongside the station.
 
 ## Features
 
 - Every sensor is optional. Omit a sensor to hide its reading, instrument and history graph.
+- Optional humidity reading above temperature, with no increase in card height.
 - Units come from each sensor's `unit_of_measurement`; values are not converted.
 - Configured sensors that are unavailable display a dash, rather than a false zero.
 - Wind direction uses degrees: north is away from the viewer, east right, south toward the viewer, and west left.
@@ -41,7 +42,7 @@ Do not register both a manually installed resource and the HACS resource for thi
 
 1. Download `weather-station-card.js` from the [latest release](https://github.com/tiaanv/weather-station-card/releases/latest).
 2. Copy it to `<config>/www/weather-station-card.js` on Home Assistant.
-3. Add `/local/weather-station-card.js?v=1.3.0` to dashboard **Resources** as a **JavaScript module**. Advanced mode may need to be enabled in your profile to see Resources.
+3. Add `/local/weather-station-card.js?v=1.4.0` to dashboard **Resources** as a **JavaScript module**. Advanced mode may need to be enabled in your profile to see Resources.
 4. Refresh the browser and add a Manual card.
 
 For YAML-managed resources:
@@ -49,7 +50,7 @@ For YAML-managed resources:
 ```yaml
 lovelace:
   resources:
-    - url: /local/weather-station-card.js?v=1.3.0
+    - url: /local/weather-station-card.js?v=1.4.0
       type: module
 ```
 
@@ -69,6 +70,7 @@ entities:
   wind_direction_degrees: sensor.weather_wind_direction_smoothed
   temperature: sensor.weather_temperature
   pressure: sensor.weather_pressure
+  humidity: sensor.weather_humidity
 ```
 
 If your DIY station produces noisy wind readings, map `wind_speed` and `wind_direction_degrees` to your smoothed sensors. The card shows one speed and one direction; it does not calculate an average itself.
@@ -97,6 +99,9 @@ All entries under `entities` are optional:
 | `wind_direction_degrees` | Numeric degrees, 0–360 | Vane and compass heading; direction **from** which wind blows |
 | `temperature` | Numeric temperature | Temperature reading and history |
 | `pressure` | Numeric atmospheric pressure | Pressure reading and history |
+| `humidity` | Numeric relative humidity | Optional reading above temperature; tap for entity history |
+
+Humidity appears above temperature beside the sensor housing. Map `humidity` to a relative-humidity sensor (normally `%`); omit it to hide both its reading and leader. Tapping it opens the entity history. Humidity does not add a fifth tile to the wide history panel, so the panel keeps its current size.
 
 The sensor defines the unit and value: for example, inches, mm, mph, km/h, hPa, inHg, °C or °F. The card does not convert between them. The degree direction input is the exception: supply degrees, not compass text or radians.
 
@@ -128,6 +133,15 @@ entities:
   wind_direction_degrees: sensor.weather_wind_direction_smoothed
 ```
 
+Humidity only:
+
+```yaml
+type: custom:weather-station-card
+name: Humidity
+entities:
+  humidity: sensor.outdoor_humidity
+```
+
 Without a history dependency:
 
 ```yaml
@@ -135,10 +149,11 @@ type: custom:weather-station-card
 show_history: false
 entities:
   temperature: sensor.outdoor_temperature
+  humidity: sensor.outdoor_humidity
   pressure: sensor.atmospheric_pressure
 ```
 
-Copyable files: [rain only](examples/rain-only.yaml), [wind only](examples/wind-only.yaml), [without history](examples/without-history.yaml).
+Copyable files: [rain only](examples/rain-only.yaml), [wind only](examples/wind-only.yaml), [humidity only](examples/humidity-only.yaml), [without history](examples/without-history.yaml).
 
 ## Troubleshooting
 
